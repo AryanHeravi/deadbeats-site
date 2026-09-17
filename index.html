@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEADBEATS // VANCOUVER UNDERGROUND</title>
+  
+  <!-- Import Raw Industrial / Punk Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080808;
+      --paper: #e3ded6;
+      --red: #d90429;
+      --charcoal: #121212;
+      --gray: #4a4a4a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg);
+      font-family: 'Space Mono', monospace;
+      color: var(--paper);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* --- CANVAS GRAIN & PHOTOCOPY TEXTURE --- */
+    #grain-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    /* Photocopied Scanline & Vignette Overlay */
+    .zine-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(0,0,0,0.95) 100%),
+        repeating-linear-gradient(
+          0deg,
+          rgba(0,0,0,0.15) 0px,
+          rgba(0,0,0,0.15) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* --- CORNER METADATA HUD (RAW & BRUTALIST) --- */
+    .hud-element {
+      position: absolute;
+      z-index: 20;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--paper);
+      opacity: 0.6;
+      line-height: 1.4;
+    }
+
+    .hud-top-left { top: 24px; left: 24px; border-left: 2px solid var(--red); padding-left: 10px; }
+    .hud-top-right { top: 24px; right: 24px; text-align: right; border-right: 2px solid var(--paper); padding-right: 10px; }
+    .hud-bottom-left { bottom: 24px; left: 24px; border-left: 2px solid var(--paper); padding-left: 10px; }
+    .hud-bottom-right { bottom: 24px; right: 24px; text-align: right; border-right: 2px solid var(--red); padding-right: 10px; }
+
+    .tag-red { color: var(--red); font-weight: bold; }
+
+    /* --- MAIN CONTENT CONTAINER --- */
+    .loader-card {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    /* Distressed Arch Logo Container */
+    .logo-wrapper {
+      position: relative;
+      margin-bottom: 30px;
+      filter: contrast(180%) brightness(95%);
+      animation: subtle-shake 0.15s infinite alternate ease-in-out;
+    }
+
+    .logo-img {
+      max-width: 340px;
+      width: 80vw;
+      height: auto;
+      display: block;
+      /* Photocopied invert look with high contrast */
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+    }
+
+    /* Violent Strobe / Photocopied Flash Glitch */
+    .logo-wrapper::before {
+      content: '';
+      position: absolute;
+      top: -5%; left: -5%; width: 110%; height: 110%;
+      background: radial-gradient(circle, rgba(217,4,41,0.2) 0%, transparent 70%);
+      mix-blend-mode: color-dodge;
+      pointer-events: none;
+      animation: strobe 0.4s infinite alternate;
+    }
+
+    /* --- PUNK TYPOGRAPHY & MESSAGES --- */
+    .sub-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 6px;
+      color: var(--paper);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0px var(--charcoal);
+    }
+
+    .ticker-box {
+      font-size: 11px;
+      height: 20px;
+      letter-spacing: 2px;
+      color: var(--red);
+      background: rgba(217, 4, 41, 0.1);
+      border: 1px solid rgba(217, 4, 41, 0.3);
+      padding: 4px 12px;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    /* --- RAW HEAVYWEIGHT PROGRESS BAR --- */
+    .progress-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: var(--charcoal);
+      border: 1px solid var(--paper);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 4px 4px 0px #000;
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--paper);
+      transition: width 0.04s linear;
+      position: relative;
+    }
+
+    .progress-bar-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 10px;
+      height: 100%;
+      background: var(--red);
+    }
+
+    .stats-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    /* Screen Burn / Distortion Flash Exit */
+    .burn-exit {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--paper);
+      mix-blend-mode: difference;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 100;
+      transition: opacity 0.2s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+    }
+
+    .burn-active {
+      opacity: 1;
+    }
+
+    /* --- ANIMATIONS --- */
+    @keyframes subtle-shake {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+      50% { transform: translate(1px, -1px) rotate(0.5deg); }
+      75% { transform: translate(-1px, -1px) rotate(0deg); }
+      100% { transform: translate(1px, 1px) rotate(-0.5deg); }
+    }
+
+    @keyframes strobe {
+      0% { opacity: 0.1; }
+      50% { opacity: 0.8; }
+      100% { opacity: 0.2; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Noise Grain Canvas -->
+  <canvas id="grain-canvas"></canvas>
+
+  <!-- Photocopied Scanline Overlay -->
+  <div class="zine-overlay"></div>
+
+  <!-- Screen Flash Exit -->
+  <div class="burn-exit" id="burn-flash"></div>
+
+  <!-- Industrial Corner HUD -->
+  <div class="hud-element hud-top-left">
+    VANCOUVER, BC<br>
+    <span class="tag-red">49.2827° N, 123.1207° W</span>
+  </div>
+
+  <div class="hud-element hud-top-right">
+    CULTURE // MOTORCYCLES // TATTOO<br>
+    EST. IN THE UNDERGROUND
+  </div>
+
+  <div class="hud-element hud-bottom-left">
+    HEAVYWEIGHT COTTON & LEATHER<br>
+    RAW & UNFILTERED
+  </div>
+
+  <div class="hud-element hud-bottom-right">
+    SYSTEM: <span class="tag-red">INITIALIZING</span><br>
+    NO COMPLY / NO SURRENDER
+  </div>
+
+  <!-- Main Loader Card -->
+  <div class="loader-card">
+    <div class="logo-wrapper">
+      <!-- Ensure your logo file is named logo.jpg in the same directory -->
+      <img src="/mnt/data/deadbeats-site/assets/logo.jpg" alt="DEADBEATS" class="logo-img">
+    </div>
+
+    <div class="sub-brand">VANCOUVER STREETWEAR & VINTAGE CULTURE</div>
+
+    <div class="ticker-box" id="status-ticker">
+      [ DIRTY AMPLIFIERS & EXHAUST FUMES ]
+    </div>
+
+    <div class="progress-wrapper">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="bar-fill"></div>
+      </div>
+      <div class="stats-row">
+        <span>STATUS: LOADING</span>
+        <span id="percent-text">00%</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DURATION = 3000; // 3 seconds total
+    const REDIRECT_URL = "main.html";
+
+    const barFill = document.getElementById("bar-fill");
+    const percentText = document.getElementById("percent-text");
+    const statusTicker = document.getElementById("status-ticker");
+    const burnFlash = document.getElementById("burn-flash");
+
+    // Raw Punk & Underground Slogans Ticker
+    const tickerMessages = [
+      "[ DIRTY AMPLIFIERS & EXHAUST FUMES ]",
+      "[ HEAVYWEIGHT COTTON // RAW LEATHER ]",
+      "[ VANCOUVER UNDERGROUND SOUNDS ]",
+      "[ CUT FROM A DIFFERENT CLOTH ]",
+      "[ ACCESSING VAULT... ]"
+    ];
+
+    const startTime = performance.now();
+
+    // Loop for smooth 3-second timing
+    function updateProgress(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / DURATION, 1);
+      const percent = Math.floor(progress * 100);
+
+      // UI updates
+      barFill.style.width = `${percent}%`;
+      percentText.innerText = `${percent.toString().padStart(2, '0')}%`;
+
+      // Cycle slogans based on progress step
+      const msgIndex = Math.min(
+        Math.floor(progress * tickerMessages.length),
+        tickerMessages.length - 1
+      );
+      statusTicker.innerText = tickerMessages[msgIndex];
+
+      // Negative burn effect at 2.8s
+      if (elapsed >= DURATION - 200) {
+        burnFlash.classList.add("burn-active");
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(updateProgress);
+      } else {
+        window.location.href = REDIRECT_URL;
+      }
+    }
+
+    requestAnimationFrame(updateProgress);
+
+    // --- Dynamic Film Grain & Motor-Oil Noise Canvas ---
+    const canvas = document.getElementById("grain-canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function generateNoise() {
+      const w = canvas.width;
+      const h = canvas.height;
+      const imgData = ctx.createImageData(w, h);
+      const buffer = new Uint32Array(imgData.data.buffer);
+      const len = buffer.length;
+
+      for (let i = 0; i < len; i++) {
+        if (Math.random() < 0.12) {
+          // Photocopied black/white grain noise
+          const color = Math.random() > 0.5 ? 0xffffffff : 0xff000000;
+          buffer[i] = color;
+        }
+      }
+
+      ctx.putImageData(imgData, 0, 0);
+      requestAnimationFrame(generateNoise);
+    }
+
+    generateNoise();
+  </script>
+</body>
+</html>
