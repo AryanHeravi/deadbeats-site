@@ -31,7 +31,7 @@
     .nav-right{display:flex;justify-content:flex-end;gap:16px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;align-items:center}
     .cart-btn{border:1px solid var(--ink);padding:8px 11px;background:transparent;cursor:pointer}
     .hero{min-height:87vh;position:relative;overflow:hidden;background:var(--ink);color:var(--paper);display:grid;place-items:center;border-bottom:2px solid var(--ink)}
-    .hero-media{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.86),rgba(0,0,0,.32)),url('assets/Screenshot\ 2026-09-16\ 183117.png') center/cover no-repeat;filter:grayscale(.15) contrast(.95);transform:scale(1.04)}
+    .hero-media{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.86),rgba(0,0,0,.32)),url('assets/editorial-1.jpg') center/cover no-repeat;filter:grayscale(.15) contrast(.95);transform:scale(1.04)}
     .hero::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 5px,rgba(255,255,255,.04) 6px 7px);mix-blend-mode:overlay;pointer-events:none}
     .hero-copy{position:relative;z-index:2;width:min(1150px,92vw);display:grid;grid-template-columns:1.2fr .8fr;align-items:end;gap:40px;padding:100px 0 60px}
     .hero-title{font-family:var(--display);font-size:clamp(78px,16vw,190px);line-height:.77;letter-spacing:-.06em;text-transform:uppercase;max-width:760px;transform:scaleX(.78);transform-origin:left}
@@ -125,9 +125,9 @@
   <div class="grain"></div>
   <div class="topbar"><span>VANCOUVER, BC — EST. IN THE UNDERGROUND</span><span>FREE SHIPPING OVER $150 CAD</span></div>
   <nav class="nav">
-    <div class="nav-links"><a href="#shop">Shop</a><a href="#world">Collections</a><a href="#story">About</a><a href="#journal">Journal</a></div>
+    <div class="nav-links"><a href="shop.html">Shop</a><a href="collections.html">Collections</a><a href="about.html">About</a><a href="journal.html">Journal</a></div>
     <a class="brand" href="#top">DEADBEATS</a>
-    <div class="nav-right"><a href="#social">Instagram</a><button class="cart-btn" id="cartOpen">Cart (<span id="cartCount">0</span>)</button></div>
+    <div class="nav-right"><a href="https://instagram.com/deadbeatsandco/" target="_blank" rel="noreferrer">Instagram</a><button class="cart-btn" id="cartOpen">Cart (<span id="cartCount">0</span>)</button></div>
   </nav>
 
   <main id="top">
@@ -137,7 +137,7 @@
         <div>
           <div class="kicker">Collection of narrated finds</div>
           <div class="hero-title">DEAD<br>BEATS</div>
-          <a class="cart-btn" style="display:inline-block;color:var(--paper);border-color:var(--paper);margin-top:28px" href="#shop">SHOP THE COLLECTION →</a>
+          <a class="cart-btn" style="display:inline-block;color:var(--paper);border-color:var(--paper);margin-top:28px" href="shop.html">SHOP THE COLLECTION →</a>
         </div>
         <div class="hero-stamp">Vancouver. Vintage. Music. Motorcycles. People. Pieces with a past — found, worn, remembered.</div>
       </div>
@@ -205,7 +205,7 @@
     <div class="footer-top">
       <div class="footer-logo">DEAD<br>BEATS</div>
       <div><h5>Visit</h5><p>436 Columbia St.<br>Vancouver, BC</p><p>Thu — Sun / 2 — 7 PM</p></div>
-      <div><h5>Stay in the loop</h5><p>New finds, events, drops and other things worth seeing.</p><p><a href="#">Instagram</a> &nbsp; / &nbsp; <a href="#">Email</a></p></div>
+      <div><h5>Stay in the loop</h5><p>New finds, events, drops and other things worth seeing.</p><p><a href="https://instagram.com/deadbeatsandco/" target="_blank" rel="noreferrer">Instagram</a> &nbsp; / &nbsp; <a href="mailto:hello@deadbeatsandco.com">Email</a></p></div>
     </div>
     <div class="footer-bottom"><div>© 2026 DEADBEATS</div><div>Collection of narrated finds</div><div>Built in Vancouver</div></div>
   </footer>
@@ -219,16 +219,16 @@
 
   <script>
     const products = [
-      {id:1,name:'Deadbeats Graphic Tee',price:55,img:'assets/n1.png',tag:'Deadbeats'},
-      {id:2,name:'Racing Stripe Jacket',price:240,img:'assets/n2.png',tag:'One of One'},
-      {id:3,name:'Narrated Finds Cap',price:48,img:'assets/n3.png',tag:'New'},
-      {id:4,name:'Deadbeats Work Shirt',price:92,img:'assets/n4.png',tag:'Vintage'},
-      {id:5,name:'Motor Club Tee',price:62,img:'assets/n5.png',tag:'Deadbeats'},
-      {id:6,name:'Archive Denim',price:180,img:'assets/n6.png',tag:'Vintage'},
-      {id:7,name:'Deadbeats Logo Sweat',price:110,img:'assets/n7.png',tag:'New'},
-      {id:8,name:'Columbia St. Long Sleeve',price:78,img:'assets/n8.png',tag:'Limited'}
+      {id:1,name:'Deadbeats Graphic Tee',price:55,img:'assets/editorial-6.jpg',tag:'Deadbeats'},
+      {id:2,name:'Racing Stripe Jacket',price:240,img:'assets/editorial-3.jpg',tag:'One of One'},
+      {id:3,name:'Narrated Finds Cap',price:48,img:'assets/editorial-2.jpg',tag:'New'},
+      {id:4,name:'Deadbeats Work Shirt',price:92,img:'assets/editorial-9.jpg',tag:'Vintage'},
+      {id:5,name:'Motor Club Tee',price:62,img:'assets/editorial-4.jpg',tag:'Deadbeats'},
+      {id:6,name:'Archive Denim',price:180,img:'assets/editorial-7.jpg',tag:'Vintage'},
+      {id:7,name:'Deadbeats Logo Sweat',price:110,img:'assets/editorial-10.jpg',tag:'New'},
+      {id:8,name:'Columbia St. Long Sleeve',price:78,img:'assets/editorial-13.jpg',tag:'Limited'}
     ];
-    const cart = [];
+    let cart = JSON.parse(localStorage.getItem('deadbeatsCart') || '[]');
     const productsEl = document.getElementById('products');
     const cartCount = document.getElementById('cartCount');
     const cartItems = document.getElementById('cartItems');
@@ -240,10 +240,11 @@
       productsEl.innerHTML = products.map(p=>`<article class="product-card" data-id="${p.id}"><div class="product-media"><img src="${p.img}" alt="${p.name}"><span class="product-tag">${p.tag}</span></div><div class="product-info"><span class="product-name">${p.name}</span><span class="product-price">$${p.price} CAD</span></div></article>`).join('');
       document.querySelectorAll('.product-card').forEach(el=>el.addEventListener('click',()=>addToCart(Number(el.dataset.id))));
     }
+    function save(){localStorage.setItem('deadbeatsCart', JSON.stringify(cart))}
     function addToCart(id){
       const item=cart.find(x=>x.id===id);
       if(item)item.qty++; else cart.push({id,qty:1});
-      renderCart(); openCart();
+      save(); renderCart(); openCart();
     }
     function renderCart(){
       const totalQty=cart.reduce((s,x)=>s+x.qty,0);
@@ -253,7 +254,7 @@
       cartItems.innerHTML=cart.map(item=>{const p=products.find(x=>x.id===item.id);total+=p.price*item.qty;return `<div class="cart-item"><img src="${p.img}" alt="${p.name}"><div><h6>${p.name}</h6><p>$${p.price} CAD</p><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button><span>${item.qty}</span><button onclick="changeQty(${p.id},1)">+</button></div></div><div style="font-size:12px">$${p.price*item.qty}</div></div>`}).join('');
       cartTotal.textContent=`$${total} CAD`;
     }
-    function changeQty(id,delta){const item=cart.find(x=>x.id===id);if(!item)return;item.qty+=delta;if(item.qty<=0)cart.splice(cart.indexOf(item),1);renderCart()}
+    function changeQty(id,delta){const item=cart.find(x=>x.id===id);if(!item)return;item.qty+=delta;if(item.qty<=0)cart.splice(cart.indexOf(item),1);save();renderCart()}
     function openCart(){drawer.classList.add('open');overlay.classList.add('show')}
     function closeCart(){drawer.classList.remove('open');overlay.classList.remove('show')}
     document.getElementById('cartOpen').addEventListener('click',openCart);
